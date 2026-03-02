@@ -1,6 +1,8 @@
+import pytest
 from playwright.sync_api import sync_playwright, expect
 
-
+@pytest.mark.courses # Добавили маркировку Courses
+@pytest.mark.regression # Добавили маркировку Regression
 def test_empty_courses_list():
     """Запускаем Playwright в синхронном режиме"""
     with sync_playwright() as playwright:
