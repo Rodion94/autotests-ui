@@ -19,7 +19,7 @@ def test_wrong_email_or_password_authorization(login_page: LoginPage, email: str
     # Заполняем форму авторизации
     login_page.login_form.fill_login_form(email=email, password=password)
     # Проверяем данные
-    login_page.login_form.check_visible(email=email, password=password)
+    login_page.login_form.check_values(email=email, password=password)
     # Нажимаем кнопку "Login"
     login_page.click_login_button()
     # Проверяем наличие сообщения об ошибке

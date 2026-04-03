@@ -1,30 +1,35 @@
-import email
-
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 from components.base_component import BaseComponent
+
+from elements.input import Input
 
 class LoginFormComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
 
 
-        self.email_input = page.get_by_test_id('login-form-email-input').locator('input')
-        self.password_input = page.get_by_test_id('login-form-password-input').locator('input')
+        self.email_input = Input(page, 'login-form-email-input', 'Email')
+        self.password_input = Input(page, 'login-form-password-input', 'Password')
 
 
 
     # Метод для заполнения формы авторизации
     def fill_login_form(self, email: str, password: str):
         self.email_input.fill(email)
+        self.email_input.check_have_value(email)
+
         self.password_input.fill(password)
+        self.password_input.check_have_value(password)
 
 
-    def check_visible(self, email: str = None, password: str = None):
-        expect(self.email_input).to_be_visible()
+    def check_visible(self, **kwargs):
+        self.email_input.check_visible(**kwargs)
+        self.password_input.check_visible(**kwargs)
+
+    def check_values(self, email: str = None, password: str = None):
         if email is not None:
-            expect(self.email_input).to_have_value(email)
+            self.email_input.check_have_value(email)
 
-        expect(self.password_input).to_be_visible()
         if password is not None:
-            expect(self.password_input).to_have_value(password)
+            self.password_input.check_have_value(password)
