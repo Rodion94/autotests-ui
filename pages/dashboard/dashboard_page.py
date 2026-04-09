@@ -17,7 +17,7 @@ class DashboardPage(BasePage):
         self.navbar = NavbarComponent(page)
 
         # Добавляем компонент Dashboard
-        self.toolbar_view = DashboardToolbarViewComponent(page)
+        self.dashboard_toolbar_view = DashboardToolbarViewComponent(page)
 
         # Добавляем компоненты Charts
         self.students_chart_view = ChartViewComponent(page, 'students', 'bar')

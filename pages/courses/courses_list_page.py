@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
 
 from components.courses.course_view_component import CourseViewComponent
+from components.courses.course_view_menu_component import CourseViewMenuComponent
 from components.navigation.navbar_component import NavbarComponent
 from components.navigation.sidebar_component import SidebarComponent
 from components.views.empty_view_component import EmptyViewComponent
@@ -13,6 +14,8 @@ class CoursesListPage(BasePage):
 
         # Пустой блок при отсутствии курсов
         self.empty_view = EmptyViewComponent(page, 'courses-list')
+
+        self.course_view_menu = CourseViewMenuComponent(page)
 
         self.course_view = CourseViewComponent(page)
 

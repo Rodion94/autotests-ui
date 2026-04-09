@@ -26,7 +26,7 @@ class RegistrationFormComponent(BaseComponent):
             self.password_input.check_have_value(password)
 
     # Метод для заполнения формы регистрации
-    def fill_form(self, email: str, username: str, password: str):
+    def fill(self, email: str, username: str, password: str):
         self.email_input.fill(email)
         self.email_input.check_have_value(email)
 
