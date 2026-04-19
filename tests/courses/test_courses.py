@@ -81,8 +81,8 @@ class TestCourses:
         courses_list_page.toolbar_view.check_visible()
         courses_list_page.toolbar_view.check_visible_create_course_button()
         # Проверяем корректность отображаемых данных на карточке курса
-        courses_list_page.course_view.check_visible_course_card(index=0, title='Playwright', estimated_time='2 weeks',
-    max_score='100', min_score='10')
+        courses_list_page.course_view.check_visible(index=0, title='Playwright', max_score='100', min_score='10',
+                                                    estimated_time='2 weeks')
 
     @allure.title("Edit course")
     @allure.severity(Severity.CRITICAL)
@@ -97,8 +97,8 @@ class TestCourses:
         # Кликаем на кнопку создания курса
         create_courses_page.create_course_toolbar_view.click_create_course_button()
         # Проверяем корректность отображаемых данных на карточке курса
-        courses_list_page.course_view.check_visible_course_card(index=0, title='Playwright', estimated_time='2 weeks',
-                                                                max_score='100', min_score='10')
+        courses_list_page.course_view.check_visible(index=0, title='Playwright', max_score='100', min_score='10',
+                                                    estimated_time='2 weeks')
         # Кликаем на кнопку Edit
         courses_list_page.course_view_menu.click_edit(index=0)
 
@@ -109,7 +109,7 @@ class TestCourses:
         # Кликаем на кнопку сохранения изменений
         create_courses_page.create_course_toolbar_view.click_create_course_button()
         # Проверяем корректность отображаемых данных на карточке курса
-        courses_list_page.course_view.check_visible_course_card(index = 0, title='Edit Test', estimated_time='1 week',
-                                                                max_score='110', min_score='20')
+        courses_list_page.course_view.check_visible(index=0, title='Edit Test', max_score='110', min_score='20',
+                                                    estimated_time='1 week')
 
 
