@@ -9,11 +9,12 @@ from tools.playwright.pages import initialize_playwright_page
 from config import settings
 
 
-@pytest.fixture # Объявляем фикстуры, по умолчанию скоуп function, то что нам нужно
+@pytest.fixture(params=settings.browsers) # Добавляем параметризацию (для запуска тестов в разных браузерах)
 def chromium_page(request: SubRequest, playwright: Playwright) -> Page: # Аннотируем возвращаемое фикстурой значение
     yield from initialize_playwright_page(
         playwright,
         test_name=request.node.name,
+        browser_type=request.param,
     )
 
 @pytest.fixture(scope='session')
@@ -35,10 +36,11 @@ def initialize_browser_state(playwright: Playwright):
     context.storage_state(path=settings.browser_state_file)
     browser.close()
 
-@pytest.fixture(scope="function")
+@pytest.fixture(params=settings.browsers)
 def chromium_page_with_state(initialize_browser_state, request: SubRequest, playwright: Playwright) -> Page:
      yield from initialize_playwright_page(
         playwright,
         test_name=request.node.name,
+         browser_type=request.param,
         storage_state=settings.browser_state_file,
     )
