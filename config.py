@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Self
 
-from pydantic import EmailStr, FilePath, HttpUrl, DirectoryPath, BaseModel
+from pydantic import EmailStr, FilePath, HttpUrl, DirectoryPath
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,12 +10,15 @@ class Browser(str, Enum):
     FIREFOX = 'firefox',
     CHROMIUM = 'chromium',
 
-class TestUser(BaseModel):
+class TestUser(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="TEST_USER")
     email: EmailStr
     username: str
     password: str
 
-class TestData(BaseModel):
+class TestData(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="TEST_DATA")
+
     image_png_file: FilePath
 
 class Settings(BaseSettings):
@@ -25,9 +28,6 @@ class Settings(BaseSettings):
         env_nested_delimiter=".",
     )
 
-    def get_base_url(self) -> str:
-        return f"{self.app_url}/"
-
     app_url: HttpUrl
     headless: bool
     browsers: list[Browser]
@@ -35,7 +35,11 @@ class Settings(BaseSettings):
     test_data: TestData
     videos_dir: DirectoryPath
     tracing_dir: DirectoryPath
+    allure_results_dir: DirectoryPath
     browser_state_file: FilePath
+
+    def get_base_url(self) -> str:
+        return f"{self.app_url}/"
 
     # Добавили метод initialize
     @classmethod
@@ -43,11 +47,13 @@ class Settings(BaseSettings):
         # Указываем пути
         videos_dir = DirectoryPath("./videos")
         tracing_dir = DirectoryPath("./tracing")
-        browser_state_file = FilePath("browser_state.json")
+        allure_results_dir = DirectoryPath("./allure-results")
+        browser_state_file = FilePath("browser-state.json")
 
         # Создаем директории, если они не существуют
         videos_dir.mkdir(exist_ok=True)  # Если директория существует, то игнорируем ошибку
         tracing_dir.mkdir(exist_ok=True)
+        allure_results_dir.mkdir(exist_ok=True)
         # Создаем файл состояния браузера, если его нет
         browser_state_file.touch(exist_ok=True) # Если файл существует, то игнорируем ошибку
 
@@ -55,9 +61,9 @@ class Settings(BaseSettings):
         return Settings(
             videos_dir=videos_dir,
             tracing_dir=tracing_dir,
-            browser_state_file=browser_state_file,
+            allure_results_dir=allure_results_dir,
+            browser_state_file=browser_state_file
         )
 
 # Инициализируем настройки
 settings = Settings.initialize()
-
