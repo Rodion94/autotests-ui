@@ -24,7 +24,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6 # Используем GitHub Action для установки Python
         with:
-          python-version: '3.12.6'
+          python-version: '3.12'
 
       # 3. Шаг для установки всех зависимостей проекта
       - name: Install dependencies
@@ -37,7 +37,27 @@ jobs:
       - name: Run Playwright tests with pytest and generate Allure results
         run: |
           pytest -m regression --alluredir=allure-results --numprocesses 2 
-          
+
+      # 4.1 Сохраняем результаты как артефакт
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-results
+          path: allure-results
+
+  publish-report:
+    runs-on: ubuntu-latest
+    needs: run-tests
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Download Allure results
+        uses: actions/download-artifact@v5
+        with:
+          name: allure-results
+          path: allure-results
 
       # 5. Шаг для получения истории отчётов Allure, если она существует
       - name: Get Allure history
